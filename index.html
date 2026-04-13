@@ -132,6 +132,7 @@
         <div class="stage hidden" id="infoStage">
             <div class="p-card">
                 <h2 id="infoTitle" style="color:var(--ice-blue); margin-bottom:20px;">Bölüm</h2>
+              <h2 id="infoTitle" style="color:var(--border); margin-bottom: 20px;"> başlatmadan önce şiiri durdurmayı unutma" </h2>
                 <button id="actionBtn" class="btn-glow" onclick="handleAction()">BAŞLAT</button>
                 <button id="videoBackBtn" class="btn-glow" style="display:none;" onclick="finish()">BİTİR</button>
                 <button style="background:none; border:none; color:var(--ice-blue); margin-top:25px; cursor:pointer; font-weight: 900;" onclick="backToMain()">← GERİ DÖN</button>
@@ -145,10 +146,14 @@
         <div id="quizIsland"><span id="quizIslandText" style="color:var(--ice-blue); font-size:11px; font-weight:900;">DİNLE VE ÇÖZ</span></div>
         <div id="quizAudioArea" style="width:100%; max-width:400px; height:120px; border-radius:25px; overflow:hidden; background:#000; border:1px solid var(--ice-blue); margin-bottom:20px;">
             <div id="quizFrameSlot" style="width:100%; height:100%;"></div>
+    
+
+
         </div>
         <div id="qBody" style="width: 100%; max-width: 420px; text-align: center; margin-top: 10px;"></div>
         <div style="margin-top:20px; color:red; cursor:pointer; font-weight:900;" onclick="backToMain()">İPTAL ET</div>
     </div>
+
 
     <div id="adminPanel">
         <h2 style="color:var(--ice-blue); margin-bottom:20px;">📊 ADMİN KAYITLARI</h2>
