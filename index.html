@@ -39,11 +39,11 @@
         #logoutBtn { margin-top: 10px; padding: 8px 20px; border-radius: 12px; background: rgba(255, 69, 58, 0.1); border: 1.5px solid rgba(255, 69, 58, 0.3); color: #FF453A; font-size: 10px; font-weight: 900; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.5s; }
         #logoutBtn.visible { opacity: 1; visibility: visible; }
 
-        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; gap: 20px; width: 100%; }
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; gap: 20px; width: 100%; position: relative; }
         .spacer-bottom { height: 200px; width: 100%; flex-shrink: 0; }
         
         .stage { width: 92%; max-width: 420px; transition: 0.5s var(--spring-heavy); flex-shrink: 0; }
-        .stage.hidden { display: none; }
+        .stage.hidden { display: none !important; }
         .p-card { width: 100%; padding: 35px 25px; border-radius: 50px; background: rgba(165, 216, 255, 0.08); backdrop-filter: blur(80px); border: 1.5px solid var(--border); text-align: center; }
 
         .pen-write { font-size: 55px; margin-bottom: 20px; display: inline-block; animation: penAnim 2s infinite alternate; }
@@ -55,15 +55,17 @@
         #progFill { height: 100%; width: 0%; background: linear-gradient(150deg, var(--ice-blue), #fff); box-shadow: 0 0 15px var(--ice-blue); transition: 1s; }
         .gold-glow { color: var(--gold) !important; text-shadow: 0 0 15px var(--gold); }
 
-        /* VİDEO ALANI BÜYÜTME */
         #musicHub { 
-            width: 92%; max-width: 600px; background: rgba(0, 0, 0, 0.4); border-radius: 30px; 
-            height: 0; opacity: 0; visibility: hidden; transition: 0.6s; overflow: hidden; border: 1.5px solid var(--border); 
+            width: 92%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border-radius: 30px; 
+            height: 0; opacity: 0; visibility: hidden; transition: height 0.5s, opacity 0.3s; overflow: hidden; border: 1.5px solid var(--border); 
+            flex-shrink: 0; margin-bottom: 0; position: relative;
         }
-        #musicHub.visible { height: 300px; opacity: 1; visibility: visible; padding: 10px; }
-        #musicHub.video-mode { height: 500px; max-width: 800px; } /* Video modunda devasa alan */
+        #musicHub.visible { height: 250px !important; opacity: 1; visibility: visible; padding: 10px; margin-bottom: 10px; }
+        #musicHub.video-mode { height: 480px !important; max-width: 95%; } 
 
-        .iframe-slot { display: none; width: 100%; height: 100%; border-radius: 20px; overflow: hidden; background: #000; }
+        .loading-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--ice-blue); font-size: 14px; font-weight: 900; z-index: 1; }
+
+        .iframe-slot { display: none; width: 100%; height: 100%; border-radius: 20px; overflow: hidden; background: #000; position: relative; z-index: 2; }
         .iframe-slot.active { display: block; }
         iframe { width: 100%; height: 100%; border: none; }
 
@@ -73,22 +75,18 @@
         .btn-glow { width: 100%; padding: 22px; border: none; border-radius: 28px; background: var(--ice-blue); color: #000; font-size: 17px; font-weight: 900; cursor: pointer; }
         input { width: 100%; padding: 22px; border-radius: 28px; border: 2.5px solid var(--border); margin-bottom: 30px; background: rgba(255,255,255,0.02); color: #fff; text-align: center; font-size: 19px; outline: none; }
 
-        #quizDock { position: fixed; inset: 0; background: rgba(0,0,0,0.98); backdrop-filter: blur(60px); z-index: 10100; display: none; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; }
-        #quizDock.visible { display: flex; }
-        
-        /* QUIZ İÇİ VİDEO ALANI */
-        #quizAudioArea { width: 100%; max-width: 600px; height: 350px; border-radius: 25px; overflow: hidden; background:#000; border:1px solid var(--ice-blue); margin-bottom:20px; }
+        #inlineQuiz { width: 100%; margin-top: 25px; display: none; border-top: 1px solid var(--border); padding-top: 20px; }
+        #inlineQuiz.visible { display: block; }
 
-        .option-cell { width: 100%; max-width: 400px; padding: 24px 30px; margin: 10px 0; border-radius: 28px; background: rgba(255,255,255,0.05); border: 1.5px solid var(--border); cursor: pointer; font-weight: 800; transition: 0.3s; text-align: center; }
+        .option-cell { width: 100%; padding: 18px; margin: 8px 0; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1.5px solid var(--border); cursor: pointer; font-weight: 800; transition: 0.3s; text-align: center; font-size: 14px; }
         .correct { background: #30D158 !important; color: #000; box-shadow: 0 0 20px #30D158; }
         .wrong { background: #FF453A !important; color: #fff; box-shadow: 0 0 20px #FF453A; animation: shake 0.4s; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
         #adminPanel { position: fixed; inset: 0; background: #000; z-index: 20000; display: none; flex-direction: column; padding: 25px; overflow-y: auto; border: 2px solid var(--ice-blue); }
         .admin-stat { background: rgba(165, 216, 255, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--ice-blue); margin-bottom: 20px; text-align: center; }
-        .log-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 12px; border-bottom: 1px solid rgba(165, 216, 255, 0.1); font-size: 11px; color: var(--ice-blue); text-align: center; }
-
-        .admin-notch { position: fixed; bottom: 0; width: 100%; height: 15px; background: transparent; z-index: 30000; cursor: pointer; }
+        .log-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 5px; padding: 12px; border-bottom: 1px solid rgba(165, 216, 255, 0.1); font-size: 11px; color: var(--ice-blue); text-align: center; align-items: center; }
+        .admin-notch { position: fixed; bottom: 0; width: 100%; height: 20px; background: transparent; z-index: 30000; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -100,14 +98,12 @@
     </div>
 
     <div class="container" id="mainContainer">
-        <!-- GİRİŞ -->
         <div class="stage" id="loginStage">
             <div class="p-card">
                 <div class="logo-row-inner">
-                    <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png
-"></div>
                     <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png 
 "></div>
+                    <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
                 </div>
                 <div class="pen-write">✍️</div>
                 <h1 style="font-size:32px; font-weight: 900; color: var(--ice-blue); margin-bottom:30px;">ŞİİR ETKİNLİĞİ</h1>
@@ -116,65 +112,50 @@
             </div>
         </div>
 
-        <div id="musicHub">
-            <div class="iframe-slot" id="slot1"><iframe src="https://drive.google.com/file/d/1EZwVZZo37oa5NL2fwO38RX2BWwHncGGM/preview"></iframe></div>
-            <div class="iframe-slot" id="slot2"><iframe src="https://drive.google.com/file/d/1CXjBNpcHrogN2InZi_8gXlzjl2bmhvk3/preview"></iframe></div>
-            <div class="iframe-slot" id="slot3"><iframe src="https://drive.google.com/file/d/1r9erUqzZCBFyBxMJn9X6vso55vMDA8sT/preview"></iframe></div>
-            <div class="iframe-slot" id="slot4"><iframe src="https://drive.google.com/file/d/1ntOc8_dvHJZODM6PWJCdwbcGxiLrGAKN/preview"></iframe></div>
-            <div class="iframe-slot" id="slot5"><iframe src="https://drive.google.com/file/d/1DQ2vm0x-f4zeULXGFRo1VDb3_OpTD6bl/preview"></iframe></div>
-            <div class="iframe-slot" id="slot6"><iframe src="https://drive.google.com/file/d/15b7UKzcR6xr1dgvvmy_tuWeS7TDfUPLJ/preview"></iframe></div>
-            <div class="iframe-slot" id="slot7"><iframe src="LINK_7"></iframe></div>
-            <div class="iframe-slot" id="slot8"><iframe src="https://drive.google.com/file/d/1hKhR8rkOVOlpmebQWANbiHfxog3PInHZ/preview"></iframe></div>
-            <div class="iframe-slot" id="slot9"><iframe src="https://drive.google.com/file/d/1XBAFBGklucNcNOKtlIEEir4WRt78fIFM/preview"></iframe></div>
-        </div>
+<div id="musicHub"> <div class="iframe-slot" id="slot1"><iframe src="https://drive.google.com/file/d/1EZwVZZo37oa5NL2fwO38RX2BWwHncGGM/preview"></iframe></div> <div class="iframe-slot" id="slot2"><iframe src="https://drive.google.com/file/d/1CXjBNpcHrogN2InZi_8gXlzjl2bmhvk3/preview"></iframe></div> <div class="iframe-slot" id="slot3"><iframe src="https://drive.google.com/file/d/1r9erUqzZCBFyBxMJn9X6vso55vMDA8sT/preview"></iframe></div> <div class="iframe-slot" id="slot4"><iframe src="https://drive.google.com/file/d/1ntOc8_dvHJZODM6PWJCdwbcGxiLrGAKN/preview"></iframe></div> <div class="iframe-slot" id="slot5"><iframe src="https://drive.google.com/file/d/1DQ2vm0x-f4zeULXGFRo1VDb3_OpTD6bl/preview"></iframe></div> <div class="iframe-slot" id="slot6"><iframe src="https://drive.google.com/file/d/15b7UKzcR6xr1dgvvmy_tuWeS7TDfUPLJ/preview"></iframe></div> <div class="iframe-slot" id="slot7"><iframe src="LINK_7"></iframe></div> <div class="iframe-slot" id="slot8"><iframe src="https://drive.google.com/file/d/1hKhR8rkOVOlpmebQWANbiHfxog3PInHZ/preview"></iframe></div> <div class="iframe-slot" id="slot9"><iframe src="https://drive.google.com/file/d/1XBAFBGklucNcNOKtlIEEir4WRt78fIFM/preview"></iframe></div> </div>
 
-        <!-- ANA MENÜ -->
         <div class="stage hidden" id="menuStage">
             <div class="prog-area">
                 <small id="progInfo">0 / 8 TAMAMLANDI</small>
                 <div class="prog-bar-bg"><div id="progFill"></div></div>
             </div>
-            <div class="menu-grid" id="mainGrid"></div>
+            <div id="mainGrid"></div>
         </div>
 
-        <!-- BÖLÜM BİLGİ -->
         <div class="stage hidden" id="infoStage">
             <div class="p-card">
-                <h2 id="infoTitle" style="color:var(--ice-blue); margin-bottom:20px;">Bölüm</h2>
-                <h3 style="color:var(--border); margin-bottom: 20px; font-size: 14px;">GEÇİŞ YAPMADAN ÖNCE DURDURMAYI UNUTMA</h3>
+                <h2 id="infoTitle" style="color:var(--ice-blue); margin-bottom:10px;">Bölüm</h2>
+                <h3 id="warningTxt" style="color:var(--border); margin-bottom: 20px; font-size: 13px;">GEÇİŞ YAPMADAN ÖNCE DURDURMAYI UNUTMA</h3>
+                
                 <button id="actionBtn" class="btn-glow" onclick="handleAction()">ETKİNLİĞİ BAŞLAT</button>
                 <button id="videoBackBtn" class="btn-glow" style="display:none;" onclick="finish()">İZLEMEYİ BİTİR</button>
-                <button style="background:none; border:none; color:var(--ice-blue); margin-top:25px; cursor:pointer; font-weight: 900;" onclick="backToMain()">← GERİ DÖN</button>
+
+                <div id="inlineQuiz">
+                    <div id="quizIslandText" style="color:var(--ice-blue); font-size:12px; font-weight:900; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:5px;">SORU 1 / 3</div>
+                    <div id="qBody" style="text-align: center;"></div>
+                    <button style="background:rgba(255, 69, 58, 0.1); border:1.5px solid #FF453A; color:#FF453A; padding:15px; width:100%; border-radius:20px; margin-top:20px; cursor:pointer; font-weight:900;" onclick="backToMain()">ETKİNLİKTEN ÇIKIŞ YAP</button>
+                </div>
+
+                <button id="backBtn" style="background:none; border:none; color:var(--ice-blue); margin-top:25px; cursor:pointer; font-weight: 900;" onclick="backToMain()">← GERİ DÖN</button>
             </div>
         </div>
         <div class="spacer-bottom"></div>
     </div>
 
-    <!-- QUIZ EKRANI -->
-    <div id="quizDock">
-        <div id="quizIsland" style="width:200px; height:40px; border-radius:20px; border:1px solid var(--ice-blue); display:flex; align-items:center; justify-content:center; margin-bottom:20px; background:#000;"><span id="quizIslandText" style="color:var(--ice-blue); font-size:11px; font-weight:900;">DİNLE VE ÇÖZ</span></div>
-        <div id="quizAudioArea">
-            <div id="quizFrameSlot" style="width:100%; height:100%;"></div>
-        </div>
-        <div id="qBody" style="width: 100%; max-width: 420px; text-align: center; margin-top: 10px;"></div>
-        <div style="margin-top:20px; color:#FF453A; cursor:pointer; font-weight:900; letter-spacing:1px;" onclick="backToMain()">İPTAL ET VE DÖN</div>
-    </div>
-
-    <!-- ADMİN PANELİ -->
     <div id="adminPanel">
         <h2 style="color:var(--ice-blue); margin-bottom:20px;">📊 ADMİN KAYITLARI</h2>
         <div class="admin-stat"><b>TOPLAM GİRİŞ:</b> <span id="statT">0</span></div>
         <div class="log-row" style="font-weight:900; background:rgba(165, 216, 255, 0.2);">
-            <div>İSİM</div><div>SONUÇ</div><div>SAAT</div>
+            <div>İSİM</div><div>BAŞARI</div><div>SAAT</div><div>TARİH</div>
         </div>
         <div id="logTable"></div>
-        <button class="btn-glow" style="margin-top:20px; background:#FF453A; color:#fff;" onclick="document.getElementById('adminPanel').style.display='none'">PANELİ KAPAT</button>
+        <button class="btn-glow" style="margin-top:20px; background:#FF453A; color:#fff;" onclick="document.getElementById('adminPanel').style.display='none'">KAPAT</button>
     </div>
 
     <div class="admin-notch" onclick="handleAdminClick()"></div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxCnk_glamj_LLzTi3voWOHYGgsmDONnAGHA6P1MMBN6wkfIJ37yM3o-m-cQYe7q83Pdg/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRppcYI4DrTLzbpY5W1UQNSqTFIJbGvfwoKnpmjscYtwTv4cVk3SQSyjtIM0KK0Tv_Uw/exec"; 
     let state = { name: "", solved: [], currentData: null, i: 0, score: 0, aClicks: 0 };
 
     const contentData = [
@@ -219,29 +200,26 @@
         state.currentData = contentData.find(x => x.id === id);
         document.getElementById("menuStage").classList.add("hidden");
         document.getElementById("infoStage").classList.remove("hidden");
-        document.getElementById("islandText").innerText = state.currentData.t.toUpperCase();
+        document.getElementById("infoTitle").innerText = state.currentData.t;
+        
         const hub = document.getElementById("musicHub");
         hub.classList.add("visible");
         document.querySelectorAll('.iframe-slot').forEach(s => s.classList.remove('active'));
         document.getElementById(`slot${id}`).classList.add('active');
-        if(state.currentData.isVideo) { hub.classList.add("video-mode"); document.getElementById("actionBtn").style.display = "none"; document.getElementById("videoBackBtn").style.display = "block"; } 
-        else { hub.classList.remove("video-mode"); document.getElementById("actionBtn").style.display = "block"; document.getElementById("videoBackBtn").style.display = "none"; }
-    }
 
-    function backToMain() {
-        document.getElementById("infoStage").classList.add("hidden");
-        document.getElementById("quizDock").classList.remove("visible");
-        document.getElementById("musicHub").classList.remove("visible");
-        document.getElementById("quizFrameSlot").innerHTML = ""; 
-        document.getElementById("menuStage").classList.remove("hidden");
-        document.getElementById("islandText").innerText = `HOŞ GELDİN, ${state.name.toUpperCase()}`;
-        renderMenu();
+        if(state.currentData.isVideo) { hub.classList.add("video-mode"); } 
+        else { hub.classList.remove("video-mode"); }
+        
+        document.getElementById("actionBtn").style.display = state.currentData.isVideo ? "none" : "block";
+        document.getElementById("videoBackBtn").style.display = state.currentData.isVideo ? "block" : "none";
+        document.getElementById("mainContainer").scrollTop = 0;
     }
 
     function handleAction() {
-        const originalIframe = document.querySelector(`#slot${state.currentData.id} iframe`).src;
-        document.getElementById("quizFrameSlot").innerHTML = `<iframe src="${originalIframe}"></iframe>`;
-        document.getElementById("quizDock").classList.add("visible");
+        document.getElementById("actionBtn").style.display = "none";
+        document.getElementById("warningTxt").style.display = "none";
+        document.getElementById("backBtn").style.display = "none";
+        document.getElementById("inlineQuiz").classList.add("visible");
         state.i = 0; state.score = 0; renderQuestion();
     }
 
@@ -249,7 +227,7 @@
         if(state.i >= 3) return finish();
         const q = state.currentData.qs[state.i];
         document.getElementById("quizIslandText").innerText = `SORU ${state.i+1} / 3`;
-        document.getElementById("qBody").innerHTML = `<h3>${q.q}</h3>${q.o.map((x,idx)=>`<div class="option-cell" onclick="checkAns(this,${idx},${q.c})">${x}</div>`).join("")}`;
+        document.getElementById("qBody").innerHTML = `<h4 style="margin-bottom:15px; font-size:16px;">${q.q}</h4>${q.o.map((x,idx)=>`<div class="option-cell" onclick="checkAns(this,${idx},${q.c})">${x}</div>`).join("")}`;
     }
 
     function checkAns(el, sel, cor) {
@@ -263,30 +241,65 @@
     async function finish() {
         if(!state.solved.includes(state.currentData.id)) state.solved.push(state.currentData.id);
         const finalScore = state.currentData.isVideo ? "İzlendi" : state.score + " / 3";
-        try { await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ u: state.name, s: finalScore, c: state.currentData.t }) }); } catch(e) {}
+        
+        // Bekleme uyarısı
+        document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR LÜTFEN BEKLEYİNİZ...";
+        
+        const simdi = new Date();
+        const dStr = simdi.toLocaleDateString('tr-TR'); 
+        const tStr = simdi.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+
+        try { 
+            await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                mode: "no-cors", 
+                body: JSON.stringify({ 
+                    u: state.name, 
+                    s: finalScore, 
+                    c: state.currentData.t, 
+                    d: "'" + dStr, 
+                    t: "'" + tStr  
+                }) 
+            }); 
+        } catch(e) {}
         backToMain();
+    }
+
+    function backToMain() {
+        document.getElementById("musicHub").classList.remove("visible", "video-mode");
+        document.getElementById("infoStage").classList.add("hidden");
+        document.getElementById("inlineQuiz").classList.remove("visible");
+        document.getElementById("actionBtn").style.display = "block";
+        document.getElementById("warningTxt").style.display = "block";
+        document.getElementById("backBtn").style.display = "block";
+        document.getElementById("menuStage").classList.remove("hidden");
+        document.getElementById("islandText").innerText = `HOŞ GELDİN, ${state.name.toUpperCase()}`;
+        renderMenu();
     }
 
     function handleAdminClick() {
         state.aClicks++;
         if(state.aClicks >= 3) {
-            const p = prompt("YÖNETİCİ ŞİFRESİ:");
+            const p = prompt("ŞİFRE:");
             if(p === "1923") { document.getElementById("adminPanel").style.display = "flex"; loadLogs(); }
             state.aClicks = 0;
         }
     }
 
     async function loadLogs() {
-        const box = document.getElementById("logTable"); box.innerHTML = "Veriler Çekiliyor...";
+        const box = document.getElementById("logTable"); box.innerHTML = "Bekleyiniz...";
         try {
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
             document.getElementById("statT").innerText = data.totalUsers;
-            box.innerHTML = data.summary.map(item => {
-                const date = new Date(item.t);
-                const timeStr = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
-                return `<div class="log-row"><div>${item.u}</div><div>${item.count} / 9</div><div>${timeStr}</div></div>`
-            }).join("");
+            box.innerHTML = data.summary.map(item => `
+                <div class="log-row">
+                    <div style="text-align:left;">${item.u}</div>
+                    <div>${item.s}</div>
+                    <div>${item.t.replace(/'/g, '')}</div>
+                    <div>${item.d.replace(/'/g, '')}</div>
+                </div>
+            `).join("");
         } catch(e) { box.innerHTML = "Hata!"; }
     }
 
