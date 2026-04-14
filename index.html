@@ -39,7 +39,7 @@
         #logoutBtn { margin-top: 10px; padding: 8px 20px; border-radius: 12px; background: rgba(255, 69, 58, 0.1); border: 1.5px solid rgba(255, 69, 58, 0.3); color: #FF453A; font-size: 10px; font-weight: 900; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.5s; }
         #logoutBtn.visible { opacity: 1; visibility: visible; }
 
-        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; gap: 20px; width: 100%; position: relative; }
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; gap: 20px; width: 100%; }
         .spacer-bottom { height: 200px; width: 100%; flex-shrink: 0; }
         
         .stage { width: 92%; max-width: 420px; transition: 0.5s var(--spring-heavy); flex-shrink: 0; }
@@ -101,19 +101,18 @@
         <div class="stage" id="loginStage">
             <div class="p-card">
                 <div class="logo-row-inner">
-                                        <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png 
+                                       <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png 
 "></div>
-                 <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
-                
+                    <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
                 </div>
-                <div class="pen-write">✍️</div>
+                <div class="pen-write">🖋️</div>
                 <h1 style="font-size:32px; font-weight: 900; color: var(--ice-blue); margin-bottom:30px;">ŞİİR ETKİNLİĞİ</h1>
                 <input id="uName" type="text" placeholder="İSİM GİRİNİZ" autocomplete="off">
                 <button class="btn-glow" onclick="initApp()">BAŞLAT</button>
             </div>
         </div>
 
-<div id="musicHub"> <div class="iframe-slot" id="slot1"><iframe src="https://drive.google.com/file/d/1EZwVZZo37oa5NL2fwO38RX2BWwHncGGM/preview"></iframe></div> <div class="iframe-slot" id="slot2"><iframe src="https://drive.google.com/file/d/1CXjBNpcHrogN2InZi_8gXlzjl2bmhvk3/preview"></iframe></div> <div class="iframe-slot" id="slot3"><iframe src="https://drive.google.com/file/d/1r9erUqzZCBFyBxMJn9X6vso55vMDA8sT/preview"></iframe></div> <div class="iframe-slot" id="slot4"><iframe src="https://drive.google.com/file/d/1ntOc8_dvHJZODM6PWJCdwbcGxiLrGAKN/preview"></iframe></div> <div class="iframe-slot" id="slot5"><iframe src="https://drive.google.com/file/d/1DQ2vm0x-f4zeULXGFRo1VDb3_OpTD6bl/preview"></iframe></div> <div class="iframe-slot" id="slot6"><iframe src="https://drive.google.com/file/d/15b7UKzcR6xr1dgvvmy_tuWeS7TDfUPLJ/preview"></iframe></div> <div class="iframe-slot" id="slot7"><iframe src="LINK_7"></iframe></div> <div class="iframe-slot" id="slot8"><iframe src="https://drive.google.com/file/d/1hKhR8rkOVOlpmebQWANbiHfxog3PInHZ/preview"></iframe></div> <div class="iframe-slot" id="slot9"><iframe src="https://drive.google.com/file/d/1XBAFBGklucNcNOKtlIEEir4WRt78fIFM/preview"></iframe></div> </div>
+    <div id="musicHub"> <div class="iframe-slot" id="slot1"><iframe src="https://drive.google.com/file/d/1EZwVZZo37oa5NL2fwO38RX2BWwHncGGM/preview"></iframe></div> <div class="iframe-slot" id="slot2"><iframe src="https://drive.google.com/file/d/1CXjBNpcHrogN2InZi_8gXlzjl2bmhvk3/preview"></iframe></div> <div class="iframe-slot" id="slot3"><iframe src="https://drive.google.com/file/d/1r9erUqzZCBFyBxMJn9X6vso55vMDA8sT/preview"></iframe></div> <div class="iframe-slot" id="slot4"><iframe src="https://drive.google.com/file/d/1ntOc8_dvHJZODM6PWJCdwbcGxiLrGAKN/preview"></iframe></div> <div class="iframe-slot" id="slot5"><iframe src="https://drive.google.com/file/d/1DQ2vm0x-f4zeULXGFRo1VDb3_OpTD6bl/preview"></iframe></div> <div class="iframe-slot" id="slot6"><iframe src="https://drive.google.com/file/d/15b7UKzcR6xr1dgvvmy_tuWeS7TDfUPLJ/preview"></iframe></div> <div class="iframe-slot" id="slot7"><iframe src="LINK_7"></iframe></div> <div class="iframe-slot" id="slot8"><iframe src="https://drive.google.com/file/d/1hKhR8rkOVOlpmebQWANbiHfxog3PInHZ/preview"></iframe></div> <div class="iframe-slot" id="slot9"><iframe src="https://drive.google.com/file/d/1XBAFBGklucNcNOKtlIEEir4WRt78fIFM/preview"></iframe></div> </div>
 
 
         <div class="stage hidden" id="menuStage">
@@ -127,7 +126,6 @@
         <div class="stage hidden" id="infoStage">
             <div class="p-card">
                 <h2 id="infoTitle" style="color:var(--ice-blue); margin-bottom:10px;">Bölüm</h2>
-                <h3 id="warningTxt" style="color:var(--border); margin-bottom: 20px; font-size: 13px;">GEÇİŞ YAPMADAN ÖNCE DURDURMAYI UNUTMA</h3>
                 
                 <button id="actionBtn" class="btn-glow" onclick="handleAction()">ETKİNLİĞİ BAŞLAT</button>
                 <button id="videoBackBtn" class="btn-glow" style="display:none;" onclick="finish()">İZLEMEYİ BİTİR</button>
@@ -219,7 +217,6 @@
 
     function handleAction() {
         document.getElementById("actionBtn").style.display = "none";
-        document.getElementById("warningTxt").style.display = "none";
         document.getElementById("backBtn").style.display = "none";
         document.getElementById("inlineQuiz").classList.add("visible");
         state.i = 0; state.score = 0; renderQuestion();
@@ -277,7 +274,6 @@
         document.getElementById("infoStage").classList.add("hidden");
         document.getElementById("inlineQuiz").classList.remove("visible");
         document.getElementById("actionBtn").style.display = "block";
-        document.getElementById("warningTxt").style.display = "block";
         document.getElementById("backBtn").style.display = "block";
         document.getElementById("menuStage").classList.remove("hidden");
         document.getElementById("islandText").innerText = `HOŞ GELDİN, ${state.name.toUpperCase()}`;
@@ -310,7 +306,7 @@
         } catch(e) { box.innerHTML = "Hata!"; }
     }
 
-    function logout() { localStorage.clear(); location.reload(); }
+    function logout() { location.reload(); }
 </script>
 </body>
 </html>
