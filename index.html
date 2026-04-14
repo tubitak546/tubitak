@@ -101,9 +101,10 @@
         <div class="stage" id="loginStage">
             <div class="p-card">
                 <div class="logo-row-inner">
-                    <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png 
+                                        <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png 
 "></div>
-                    <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
+                 <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
+                
                 </div>
                 <div class="pen-write">✍️</div>
                 <h1 style="font-size:32px; font-weight: 900; color: var(--ice-blue); margin-bottom:30px;">ŞİİR ETKİNLİĞİ</h1>
@@ -113,6 +114,7 @@
         </div>
 
 <div id="musicHub"> <div class="iframe-slot" id="slot1"><iframe src="https://drive.google.com/file/d/1EZwVZZo37oa5NL2fwO38RX2BWwHncGGM/preview"></iframe></div> <div class="iframe-slot" id="slot2"><iframe src="https://drive.google.com/file/d/1CXjBNpcHrogN2InZi_8gXlzjl2bmhvk3/preview"></iframe></div> <div class="iframe-slot" id="slot3"><iframe src="https://drive.google.com/file/d/1r9erUqzZCBFyBxMJn9X6vso55vMDA8sT/preview"></iframe></div> <div class="iframe-slot" id="slot4"><iframe src="https://drive.google.com/file/d/1ntOc8_dvHJZODM6PWJCdwbcGxiLrGAKN/preview"></iframe></div> <div class="iframe-slot" id="slot5"><iframe src="https://drive.google.com/file/d/1DQ2vm0x-f4zeULXGFRo1VDb3_OpTD6bl/preview"></iframe></div> <div class="iframe-slot" id="slot6"><iframe src="https://drive.google.com/file/d/15b7UKzcR6xr1dgvvmy_tuWeS7TDfUPLJ/preview"></iframe></div> <div class="iframe-slot" id="slot7"><iframe src="LINK_7"></iframe></div> <div class="iframe-slot" id="slot8"><iframe src="https://drive.google.com/file/d/1hKhR8rkOVOlpmebQWANbiHfxog3PInHZ/preview"></iframe></div> <div class="iframe-slot" id="slot9"><iframe src="https://drive.google.com/file/d/1XBAFBGklucNcNOKtlIEEir4WRt78fIFM/preview"></iframe></div> </div>
+
 
         <div class="stage hidden" id="menuStage">
             <div class="prog-area">
@@ -242,7 +244,6 @@
         if(!state.solved.includes(state.currentData.id)) state.solved.push(state.currentData.id);
         const finalScore = state.currentData.isVideo ? "İzlendi" : state.score + " / 3";
         
-        // Bekleme uyarısı
         document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR LÜTFEN BEKLEYİNİZ...";
         
         const simdi = new Date();
@@ -266,6 +267,12 @@
     }
 
     function backToMain() {
+        document.querySelectorAll('iframe').forEach(iframe => {
+            const currentSrc = iframe.src;
+            iframe.src = "about:blank";
+            setTimeout(() => { iframe.src = currentSrc; }, 100);
+        });
+
         document.getElementById("musicHub").classList.remove("visible", "video-mode");
         document.getElementById("infoStage").classList.add("hidden");
         document.getElementById("inlineQuiz").classList.remove("visible");
