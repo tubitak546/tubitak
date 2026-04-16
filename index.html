@@ -39,7 +39,7 @@
         #logoutBtn { margin-top: 10px; padding: 8px 20px; border-radius: 12px; background: rgba(255, 69, 58, 0.1); border: 1.5px solid rgba(255, 69, 58, 0.3); color: #FF453A; font-size: 10px; font-weight: 900; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.5s; }
         #logoutBtn.visible { opacity: 1; visibility: visible; }
 
-        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; gap: 20px; width: 100%; }
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; gap: 20px; width: 100%; position: relative; }
         .spacer-bottom { height: 200px; width: 100%; flex-shrink: 0; }
         
         .stage { width: 92%; max-width: 420px; transition: 0.5s var(--spring-heavy); flex-shrink: 0; }
@@ -58,7 +58,7 @@
         #musicHub { 
             width: 92%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border-radius: 30px; 
             height: 0; opacity: 0; visibility: hidden; transition: height 0.5s, opacity 0.3s; overflow: hidden; border: 1.5px solid var(--border); 
-            flex-shrink: 0; margin-bottom: 0; position: relative;
+            flex-shrink: 0; margin-bottom: 0; position: relative; 
         }
         #musicHub.visible { height: 250px !important; opacity: 1; visibility: visible; padding: 10px; margin-bottom: 10px; }
         #musicHub.video-mode { height: 480px !important; max-width: 95%; } 
@@ -103,9 +103,9 @@
                 <div class="logo-row-inner">
                                        <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png 
 "></div>
-                    <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
+                     <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
                 </div>
-                <div class="pen-write">🖋️</div>
+                <div class="pen-write">✍️</div>
                 <h1 style="font-size:32px; font-weight: 900; color: var(--ice-blue); margin-bottom:30px;">ŞİİR ETKİNLİĞİ</h1>
                 <input id="uName" type="text" placeholder="İSİM GİRİNİZ" autocomplete="off">
                 <button class="btn-glow" onclick="initApp()">BAŞLAT</button>
@@ -126,7 +126,6 @@
         <div class="stage hidden" id="infoStage">
             <div class="p-card">
                 <h2 id="infoTitle" style="color:var(--ice-blue); margin-bottom:10px;">Bölüm</h2>
-                
                 <button id="actionBtn" class="btn-glow" onclick="handleAction()">ETKİNLİĞİ BAŞLAT</button>
                 <button id="videoBackBtn" class="btn-glow" style="display:none;" onclick="finish()">İZLEMEYİ BİTİR</button>
 
@@ -144,7 +143,7 @@
 
     <div id="adminPanel">
         <h2 style="color:var(--ice-blue); margin-bottom:20px;">📊 ADMİN KAYITLARI</h2>
-        <div class="admin-stat"><b>TOPLAM GİRİŞ:</b> <span id="statT">0</span></div>
+        <div class="admin-stat"><b>TOPLAM KATILIMCI:</b> <span id="statT">0</span></div>
         <div class="log-row" style="font-weight:900; background:rgba(165, 216, 255, 0.2);">
             <div>İSİM</div><div>BAŞARI</div><div>SAAT</div><div>TARİH</div>
         </div>
@@ -155,8 +154,8 @@
     <div class="admin-notch" onclick="handleAdminClick()"></div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRppcYI4DrTLzbpY5W1UQNSqTFIJbGvfwoKnpmjscYtwTv4cVk3SQSyjtIM0KK0Tv_Uw/exec"; 
-    let state = { name: "", solved: [], currentData: null, i: 0, score: 0, aClicks: 0 };
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_fAOF3s3QFMchidYUms8eQ0766G6lPmKBPUMPM13OIsNUoov47AqlIbi9ix3SL24/exec"; 
+    let state = { name: "", solved: [], currentData: null, i: 0, score: 0, aClicks: 0, sessionId: "" };
 
     const contentData = [
         { id: 1, t: "Uzun İnce Bir Yoldayım", qs: [{q:"Soru 1", o:["A","B","C"], c:0},{q:"Soru 2", o:["A","B","C"], c:1},{q:"Soru 3", o:["A","B","C"], c:0}]},
@@ -174,26 +173,43 @@
         const val = document.getElementById("uName").value;
         if(val.length < 2) return;
         state.name = val;
+        state.sessionId = state.name + "_" + Date.now();
         document.getElementById("loginStage").classList.add("hidden");
         document.getElementById("menuStage").classList.remove("hidden");
         document.getElementById("logoutBtn").classList.add("visible");
         document.getElementById("islandText").innerText = `HOŞ GELDİN, ${state.name.toUpperCase()}`;
         renderMenu();
+        // İSİM PANELDE GÖZÜKSÜN (Test çözmese bile)
+        sendInitialRegistration();
+    }
+
+    async function sendInitialRegistration() {
+        const simdi = new Date();
+        const dStr = simdi.toLocaleDateString('tr-TR'); 
+        const tStr = simdi.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+        try { 
+            await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                mode: "no-cors", 
+                body: JSON.stringify({ 
+                    u: state.sessionId, n: state.name, s: "0 / 9", c: "Giriş Yaptı", d: "'" + dStr, t: "'" + tStr  
+                }) 
+            }); 
+        } catch(e) {}
     }
 
     function renderMenu() {
-        const count = state.solved.filter(id => id !== 9).length;
+        const count = state.solved.length;
         const fill = document.getElementById("progFill");
         const info = document.getElementById("progInfo");
-        fill.style.width = (count / 8 * 100) + "%";
-        if(count === 8) { info.innerText = "TEBRİKLER! TÜM ŞİİRLER TAMAMLANDI 🏆"; info.classList.add("gold-glow"); fill.style.background = "var(--gold)"; } 
-        else { info.innerText = `${count} / 8 TAMAMLANDI`; }
+        fill.style.width = (count / 9 * 100) + "%";
+        if(count === 9) { info.innerText = "TEBRİKLER! TÜM ŞİİRLER TAMAMLANDI 🏆"; info.classList.add("gold-glow"); fill.style.background = "var(--gold)"; } 
+        else { info.innerText = `${count} / 9 TAMAMLANDI`; }
         document.getElementById("mainGrid").innerHTML = contentData.map(item => `
             <div class="menu-item ${state.solved.includes(item.id) ? 'done' : ''}" onclick="selectContent(${item.id})">
                 <span>${item.t}</span><div>${state.solved.includes(item.id) ? '✓' : '❯'}</div>
             </div>
         `).join("");
-        document.getElementById("mainContainer").scrollTop = 0;
     }
 
     function selectContent(id) {
@@ -201,18 +217,12 @@
         document.getElementById("menuStage").classList.add("hidden");
         document.getElementById("infoStage").classList.remove("hidden");
         document.getElementById("infoTitle").innerText = state.currentData.t;
-        
         const hub = document.getElementById("musicHub");
         hub.classList.add("visible");
         document.querySelectorAll('.iframe-slot').forEach(s => s.classList.remove('active'));
         document.getElementById(`slot${id}`).classList.add('active');
-
-        if(state.currentData.isVideo) { hub.classList.add("video-mode"); } 
-        else { hub.classList.remove("video-mode"); }
-        
-        document.getElementById("actionBtn").style.display = state.currentData.isVideo ? "none" : "block";
-        document.getElementById("videoBackBtn").style.display = state.currentData.isVideo ? "block" : "none";
-        document.getElementById("mainContainer").scrollTop = 0;
+        if(state.currentData.isVideo) { hub.classList.add("video-mode"); document.getElementById("actionBtn").style.display = "none"; document.getElementById("videoBackBtn").style.display = "block"; } 
+        else { hub.classList.remove("video-mode"); document.getElementById("actionBtn").style.display = "block"; document.getElementById("videoBackBtn").style.display = "none"; }
     }
 
     function handleAction() {
@@ -239,24 +249,17 @@
 
     async function finish() {
         if(!state.solved.includes(state.currentData.id)) state.solved.push(state.currentData.id);
-        const finalScore = state.currentData.isVideo ? "İzlendi" : state.score + " / 3";
-        
-        document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR LÜTFEN BEKLEYİNİZ...";
-        
+        const finalScoreText = state.solved.length + " / 9";
+        document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR...";
         const simdi = new Date();
         const dStr = simdi.toLocaleDateString('tr-TR'); 
         const tStr = simdi.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
-
         try { 
             await fetch(SCRIPT_URL, { 
                 method: "POST", 
                 mode: "no-cors", 
                 body: JSON.stringify({ 
-                    u: state.name, 
-                    s: finalScore, 
-                    c: state.currentData.t, 
-                    d: "'" + dStr, 
-                    t: "'" + tStr  
+                    u: state.sessionId, n: state.name, s: finalScoreText, c: state.currentData.t, d: "'" + dStr, t: "'" + tStr  
                 }) 
             }); 
         } catch(e) {}
@@ -265,11 +268,9 @@
 
     function backToMain() {
         document.querySelectorAll('iframe').forEach(iframe => {
-            const currentSrc = iframe.src;
-            iframe.src = "about:blank";
+            const currentSrc = iframe.src; iframe.src = "about:blank";
             setTimeout(() => { iframe.src = currentSrc; }, 100);
         });
-
         document.getElementById("musicHub").classList.remove("visible", "video-mode");
         document.getElementById("infoStage").classList.add("hidden");
         document.getElementById("inlineQuiz").classList.remove("visible");
@@ -294,10 +295,13 @@
         try {
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
-            document.getElementById("statT").innerText = data.totalUsers;
-            box.innerHTML = data.summary.map(item => `
+            const sessionMap = {};
+            data.summary.forEach(item => { sessionMap[item.u] = item; });
+            const list = Object.values(sessionMap);
+            document.getElementById("statT").innerText = list.length;
+            box.innerHTML = list.reverse().map(item => `
                 <div class="log-row">
-                    <div style="text-align:left;">${item.u}</div>
+                    <div style="text-align:left;">${item.n}</div>
                     <div>${item.s}</div>
                     <div>${item.t.replace(/'/g, '')}</div>
                     <div>${item.d.replace(/'/g, '')}</div>
