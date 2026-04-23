@@ -68,8 +68,21 @@
         .iframe-slot.active { display: block; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        .menu-item { background: rgba(9, 3, 63, 0); border: 1px solid var(--border); border-radius: 24px; padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; cursor: pointer; transition: 0.3s; }
-        .menu-item.done { border-color: #30D158; background: rgba(48, 209, 88, 0.08); }
+.menu-item {
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid #ffffff;
+    border-radius: 24px;
+    padding: 22px 28px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    cursor: pointer;
+
+    color: white;
+    font-weight: 700;
+
+    box-shadow: 0 0 15px rgba(255,255,255,0.15);
+}        .menu-item.done { border-color: #30D158; background: rgba(48, 209, 88, 0.08); }
 
         .btn-glow { width: 100%; padding: 22px; border: none; border-radius: 28px; background: #1f29b1; color: #ffffff; font-size: 17px; font-weight: 900; cursor: pointer; }
         input { width: 100%; padding: 22px; border-radius: 28px; border: 2.5px solid var(--border); margin-bottom: 30px; background: rgba(255,255,255,0.02); color: #fff; text-align: center; font-size: 19px; outline: none; }
@@ -77,8 +90,24 @@
         #inlineQuiz { width: 100%; margin-top: 25px; display: none; border-top: 1px solid var(--border); padding-top: 20px; }
         #inlineQuiz.visible { display: block; }
 
-        .option-cell { width: 100%; padding: 18px; margin: 8px 0; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1.5px solid var(--border); cursor: pointer; font-weight: 800; transition: 0.3s; text-align: center; font-size: 14px; }
-        .correct { background: #30D158 !important; color: #000; box-shadow: 0 0 20px #30D158; }
+.option-cell {
+    width: 100%;
+    padding: 18px;
+    margin: 8px 0;
+    border-radius: 20px;
+
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid #ffffff;
+
+    color: white;
+    font-weight: 800;
+    text-align: center;
+
+    cursor: pointer;
+    transition: 0.3s;
+
+    box-shadow: 0 0 15px rgba(255,255,255,0.12);
+}        .correct { background: #30D158 !important; color: #000; box-shadow: 0 0 20px #30D158; }
         .wrong { background: #FF453A !important; color: #fff; box-shadow: 0 0 20px #FF453A; animation: shake 0.4s; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
@@ -97,7 +126,7 @@ body {
 /* 📱 TELEFON İÇİN */
 @media (max-width: 1200px) {
     body {
-        background-size: 400%;   /* büyüt */
+        background-size: 300%;   /* büyüt */
         background-position: center top; /* yukarı hizala */
     }
 }
@@ -105,10 +134,38 @@ body {
     color: white;
     opacity: 1; /* bazı tarayıcılarda soluk olmaması için */
 }
+#uName {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid white;
+    color: white;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+strong-box {
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 18px rgba(255,255,255,0.25);
+    border-radius: 24px;
+    color: white;
+}
+@media (max-width: 768px) {
+    .menu-item, .option-cell, .p-card {
+        border-radius: 18px;
+        padding: 18px;
+        font-size: 15px;
+    }
 
+    #dynamicIsland {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 22px !important;
+    }
+}
    </style>
 </head>
 <body>
+
 
     <div class="aurora"></div>
     <div id="topControls">
@@ -160,6 +217,12 @@ body {
         </div>
         <div class="spacer-bottom"></div>
     </div>
+
+<div id="resultScreen" style="display:none; position:fixed; inset:0; background:#000; z-index:25000; color:white; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+    <h1 style="font-size:28px; margin-bottom:20px;">SONUÇ</h1>
+    <div id="resultText" style="font-size:18px; font-weight:800;"></div>
+    <button class="btn-glow" style="margin-top:30px;" onclick="location.reload()">TEKRAR BAŞLA</button>
+</div>
 
     <div id="adminPanel">
         <h2 style="color:var(--ice-blue); margin-bottom:20px;">📊 ADMİN KAYITLARI</h2>
@@ -251,18 +314,36 @@ body {
         document.getElementById("qBody").innerHTML = `<h4 style="margin-bottom:15px; font-size:16px;">${q.q}</h4>${q.o.map((x,idx)=>`<div class="option-cell" onclick="checkAns(this,${idx},${q.c})">${x}</div>`).join("")}`;
     }
 
-    function checkAns(el, sel, cor) {
-        const cells = document.querySelectorAll('.option-cell');
-        cells.forEach(c => c.style.pointerEvents = "none");
-        if(sel === cor) { el.classList.add("correct"); state.score++; }
-        else { el.classList.add("wrong"); }
-        setTimeout(() => { state.i++; renderQuestion(); }, 1200);
+   function checkAns(el, sel, cor) {
+    const cells = document.querySelectorAll('.option-cell');
+    cells.forEach(c => c.style.pointerEvents = "none");
+
+    if(sel === cor) {
+        el.classList.add("correct");
+        state.score++;
+
+        // ⭐ DOĞRU ANİMASYON
+        document.body.style.boxShadow = "inset 0 0 80px rgba(48,209,88,0.4)";
+        setTimeout(() => document.body.style.boxShadow = "", 400);
+    } 
+    else {
+        el.classList.add("wrong");
+
+        // ❌ YANLIŞ ANİMASYON
+        document.body.style.boxShadow = "inset 0 0 80px rgba(255,69,58,0.4)";
+        setTimeout(() => document.body.style.boxShadow = "", 400);
     }
 
+    setTimeout(() => { state.i++; renderQuestion(); }, 1000);
+}
+    
+
     async function finish() {
+        const percent = Math.round((state.solved.length / 9) * 100);
         if(!state.solved.includes(state.currentData.id)) state.solved.push(state.currentData.id);
         const finalScoreText = state.solved.length + " / 9";
         document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR LÜTFEN BEKLEYİNİZ...";
+        
         const simdi = new Date();
         const dStr = simdi.toLocaleDateString('tr-TR'); 
         const tStr = simdi.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
