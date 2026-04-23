@@ -15,9 +15,7 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, sans-serif; margin: 0; padding: 0; }
         body { background: #000; color: #fff; height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow: hidden; }
 
-        .aurora {.aurora {
-    display: none !important;
-} }
+       
 
         #topControls { width: 100%; padding: 25px 20px 10px; display: flex; flex-direction: column; align-items: center; z-index: 10005; flex-shrink: 0; }
         
@@ -45,7 +43,7 @@
         
         .stage { width: 92%; max-width: 420px; transition: 0.5s var(--spring-heavy); flex-shrink: 0; }
         .stage.hidden { display: none !important; }
-        .p-card { width: 100%; padding: 35px 25px; border-radius: 50px; background: rgba(165, 216, 255, 0.08); backdrop-filter: blur(80px); border: 1.5px solid var(--border); text-align: center; }
+        .p-card { width: 100%; padding: 35px 25px; border-radius: 50px; background: rgba(165, 216, 255, 0.08); backdrop-filter: blur(px); border: 1.5px solid var(--border); text-align: center; }
 
         .pen-write { font-size: 55px; margin-bottom: 20px; display: inline-block; animation: penAnim 2s infinite alternate; }
         @keyframes penAnim { from { transform: rotate(0); } to { transform: rotate(-25deg) translateX(12px); } }
@@ -92,7 +90,16 @@
 
 body {
     background: url("https://i.ibb.co/kg9GXGHF/asikveysel16.jpg") no-repeat center center;
-    background-size: cover;
+    
+    background-color: black;
+}
+
+/* 📱 TELEFON İÇİN */
+@media (max-width: 1000px) {
+    body {
+        background-size: 400%;   /* büyüt */
+        background-position: center top; /* yukarı hizala */
+    }
 }
 
 
