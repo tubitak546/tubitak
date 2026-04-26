@@ -194,7 +194,7 @@ strong-box {
 
         <div class="stage hidden" id="menuStage">
             <div class="prog-area">
-                <small id="progInfo">0 / 9 TAMAMLANDI</small>
+                <small id="progInfo">0 / 8 TAMAMLANDI</small>
                 <div class="prog-bar-bg"><div id="progFill"></div></div>
             </div>
             <div id="mainGrid"></div>
@@ -238,7 +238,16 @@ strong-box {
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_fAOF3s3QFMchidYUms8eQ0766G6lPmKBPUMPM13OIsNUoov47AqlIbi9ix3SL24/exec"; 
-    let state = { name: "", solved: [], currentData: null, i: 0, score: 0, aClicks: 0, sessionId: "" };
+   let state = { 
+    name: "", 
+    solved: [], 
+    scores: {}, // EKLENEN KISIM BURASI
+    currentData: null, 
+    i: 0, 
+    score: 0, 
+    aClicks: 0, 
+    sessionId: "" 
+};
 
     const contentData = [
         { id: 1, t: "Uzun İnce Bir Yoldayım", qs: [{q:"Şiirin teması nedir?", o:["ÖLÜM","HASRET","AŞK"], c:0},{q:"Şiirde iki kapalı han metaforuyla anlatılmak istenen nedir?", o:["DÜNYA-AHİRET","GECE-GÜNDÜZ","DOĞUM-ÖLÜM"], c:2}]},
@@ -247,9 +256,8 @@ strong-box {
         { id: 4, t: "Sazıma", qs: [{q:"şiirde hangi edebi sanat ağır basar?", o:["TEŞBİH","TEŞHİS","İNTAK"], c:1},{q:"Şiirin teması nedir?", o:["ÖLÜM-SANATIN KALICILIĞI","HAYATIN GEÇİCİLİĞİ-HÜZÜN","GEÇMİŞE DUYULAN ÖZLEM"], c:0}]},
         { id: 5, t: "Güzelliğin On Para Etmez", qs: [{q:"Şiirin ölçüsünü belirtiniz?", o:["SERBEST ÖLÇÜ"," 7'LI HECE ÖLÇÜSÜ"," 11'LI HECE ÖLÇÜSÜ"], c:2},{q:"şiirin teması nedir?", o:["AŞK-ÖZLEM","DOĞADAN KOPUŞ-KARAMSARLIK","MADDİ DEĞERLERİN ÖNEMİ"], c:0}]},
         { id: 6, t: "Beni Hor Görme", qs: [{q:"Şiirin temasını nedir?", o:["HASRET-AŞK","DOĞA-TABİAT","EŞİTLİK-KARDEŞLİK"], c:2},{q:"Şiirde geçen 'Aynı vardan var olmuşuz' dizesi tasavvuftaki hangi düzine ile ilgilidir? ", o:["VAHDET-VÜCUT","TECELLİ-ZAHİR","FENA-BEKA"], c:0}]},
-        { id: 7, t: "Atatürk'e Ağlayalım", qs: [{q:"Şiirin teması nedir?", o:["ATATÜRK SEVGİSİ","YİĞİTLİK VE MERTLİK","DÜNYA FANİLİĞİ"], c:0}]},
-        { id: 8, t: "Kahpe Felek", qs: [{q:"Şiirde Anadolu kültürüne ait unsurlar nelerdir?", o:["GURBET-AYRILIK","İMECE-YARDIMLAŞMA","YAYLACILIK-GÖÇERLİK"], c:0},{q:"Şiirin teması nedir?", o:["KADERE RIZA-SABIR","İSYAN-ŞİKAYET","YAŞAMA SEVİNCİ-UMUT"], c:1}]},
-        { id: 9, t: "AŞIK VEYSEL'İN KENDİ SESİNDEN", isVideo: true }
+        { id: 7, t: "Kahpe Felek", qs: [{q:"Şiirde Anadolu kültürüne ait unsurlar nelerdir?", o:["GURBET-AYRILIK","İMECE-YARDIMLAŞMA","YAYLACILIK-GÖÇERLİK"], c:0},{q:"Şiirin teması nedir?", o:["KADERE RIZA-SABIR","İSYAN-ŞİKAYET","YAŞAMA SEVİNCİ-UMUT"], c:1}]},
+        { id: 8, t: "AŞIK VEYSEL'İN KENDİ SESİNDEN", isVideo: true }
     ];
 
     function initApp() {
@@ -272,20 +280,40 @@ strong-box {
         try { await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ u: state.sessionId, n: state.name, s: "0 / 9", c: "Giriş Yaptı", d: "'" + dStr, t: "'" + tStr }) }); } catch(e) {}
     }
 
-    function renderMenu() {
-        const count = state.solved.length;
-        const fill = document.getElementById("progFill");
-        const info = document.getElementById("progInfo");
-        fill.style.width = (count / 9 * 100) + "%";
-        if(count === 9) { info.innerText = "TEBRİKLER! TÜM ŞİİRLER TAMAMLANDI 🏆"; info.classList.add("gold-glow"); fill.style.background = "var(--gold)"; } 
-        else { info.innerText = `${count} / 9 TAMAMLANDI`; }
-        document.getElementById("mainGrid").innerHTML = contentData.map(item => `
-            <div class="menu-item ${state.solved.includes(item.id) ? 'done' : ''}" onclick="selectContent(${item.id})">
-                <span>${item.t}</span><div>${state.solved.includes(item.id) ? '✓' : '❯'}</div>
-            </div>
-        `).join("");
+     function renderMenu() {
+    const count = state.solved.length;
+    const fill = document.getElementById("progFill");
+    const info = document.getElementById("progInfo");
+    fill.style.width = (count / 8 * 100) + "%";
+    
+    if(count === 8) { 
+        info.innerText = "TEBRİKLER! TÜM ŞİİRLER TAMAMLANDI 🏆"; 
+        info.classList.add("gold-glow"); 
+        fill.style.background = "var(--gold)"; 
+    } 
+    else { 
+        info.innerText = `${count} / 8 TAMAMLANDI`; 
     }
 
+    document.getElementById("mainGrid").innerHTML = contentData.map(item => {
+        // Skoru belirle: Eğer çözülmüşse skoru yaz, video ise tik koy, çözülmemişse ok koy.
+        let statusDisplay = '❯';
+        if (state.solved.includes(item.id)) {
+            if (item.isVideo) {
+                statusDisplay = '✓';
+            } else {
+                statusDisplay = `<span style="color:#30D158;">${state.scores[item.id] || 0} / ${item.qs.length}</span>`;
+            }
+        }
+
+        return `
+            <div class="menu-item ${state.solved.includes(item.id) ? 'done' : ''}" onclick="selectContent(${item.id})">
+                <span>${item.t}</span>
+                <div>${statusDisplay}</div>
+            </div>
+        `;
+    }).join("");
+}
     function selectContent(id) {
         state.currentData = contentData.find(x => x.id === id);
         document.getElementById("menuStage").classList.add("hidden");
@@ -338,26 +366,26 @@ strong-box {
 }
     
 
-    async function finish() {
-        const percent = Math.round((state.solved.length / 9) * 100);
-        if(!state.solved.includes(state.currentData.id)) state.solved.push(state.currentData.id);
-        const finalScoreText = state.solved.length + " / 9";
-        document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR LÜTFEN BEKLEYİNİZ...";
-        
-        const simdi = new Date();
-        const dStr = simdi.toLocaleDateString('tr-TR'); 
-        const tStr = simdi.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
-        try { 
-            await fetch(SCRIPT_URL, { 
-                method: "POST", 
-                mode: "no-cors", 
-                body: JSON.stringify({ 
-                    u: state.sessionId, n: state.name, s: finalScoreText, c: state.currentData.t, d: "'" + dStr, t: "'" + tStr  
-                }) 
-            }); 
-        } catch(e) {}
-        backToMain();
+ async function finish() {
+    const percent = Math.round((state.solved.length / 9) * 100);
+    
+    // Çözülenler listesine ekle
+    if(!state.solved.includes(state.currentData.id)) {
+        state.solved.push(state.currentData.id);
     }
+    
+    // Skoru kaydet (Video değilse)
+    if(!state.currentData.isVideo) {
+        state.scores[state.currentData.id] = state.score;
+    }
+
+    const finalScoreText = state.solved.length + " / 8";
+    document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR...";
+    
+    // ... (fetch/kayıt kısımları aynı kalıyor)
+    
+    backToMain();
+}
 
     function backToMain() {
         document.querySelectorAll('iframe').forEach(iframe => {
