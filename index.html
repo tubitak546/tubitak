@@ -1,437 +1,815 @@
 <!DOCTYPE html>
+
 <html lang="tr">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
     <title>DİJİTAL ŞİİR SERGİSİ</title>
+
     <style>
-        :root { 
-            --ice-blue: ; 
+
+        :root {
+
+            --ice-blue: ;
+
             --gold: #FFD700;
+
             --border: rgba(165, 216, 255, 0.35);
+
             --spring-heavy: cubic-bezier(0.15, 1, 0.15, 1);
+
         }
 
+
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, sans-serif; margin: 0; padding: 0; }
+
         body { background: #fff; color: #fff; height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow: hidden; }
+
+
 
        
 
+
+
         #topControls { width: 100%; padding: 25px 20px 10px; display: flex; flex-direction: column; align-items: center; z-index: 10005; flex-shrink: 0; }
-        
-        #dynamicIsland { 
-            width: 320px; height: 50px; border-radius: 25px; background: rgba(55, 56, 61, 0.884); 
-            backdrop-filter: blur(5000px); border: 1.5px solid #fff; 
+
+       
+
+        #dynamicIsland {
+
+            width: 320px; height: 50px; border-radius: 25px; background: rgba(55, 56, 61, 0.884);
+
+            backdrop-filter: blur(5000px); border: 1.5px solid #fff;
+
             display: flex; align-items: center; justify-content: center; padding: 0 15px; box-shadow: 0 10px 30px rgba(30, 72, 150, 0.5);
+
         }
+
         #islandText { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
 
+
+
         .logo-row-inner { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; }
-        .logo-box-inner { 
-            width: 85px; height: 85px; background: rgba(165, 216, 255, 0.1); 
-            border: 2px solid var(--ice-blue); border-radius: 20px; 
-            display: flex; align-items: center; justify-content: center; 
+
+        .logo-box-inner {
+
+            width: 85px; height: 85px; background: rgba(165, 216, 255, 0.1);
+
+            border: 2px solid var(--ice-blue); border-radius: 20px;
+
+            display: flex; align-items: center; justify-content: center;
+
             backdrop-filter: blur(10px); padding: 8px; transition: 0.3s;
+
         }
+
         .logo-box-inner img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
+
+
         #logoutBtn { margin-top: 10px; padding: 8px 20px; border-radius: 12px; background: rgba(255, 69, 58, 0.1); border: 1.5px solid rgba(255, 69, 58, 0.3); color: #FF453A; font-size: 10px; font-weight: 900; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.5s; }
+
         #logoutBtn.visible { opacity: 1; visibility: visible; }
 
+
+
         .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; gap: 20px; width: 100%; position: relative; }
+
         .spacer-bottom { height: 200px; width: 100%; flex-shrink: 0; }
-        
+
+       
+
         .stage { width: 92%; max-width: 420px; transition: 0.5s var(--spring-heavy); flex-shrink: 0; }
+
         .stage.hidden { display: none !important; }
+
         .p-card { width: 100%; padding: 35px 25px; border-radius: 50px; background: rgba(165, 216, 255, 0.08); backdrop-filter: blur(px); border: 1.5px solid var(--border); text-align: center; }
 
+
+
         .pen-write { font-size: 55px; margin-bottom: 20px; ; display: inline-block; animation: penAnim 2s infinite alternate; }
+
         @keyframes penAnim { from { transform: rotate(0); } to { transform: rotate(-25deg) translateX(12px); } }
 
+
+
         .prog-area { width: 100%; margin-bottom: 25px; text-align: left; }
+
         #progInfo { font-size: 11px; font-weight: 900; color: var(--ice-blue); letter-spacing: 2px; }
+
         .prog-bar-bg { width: 100%; height: 20px; background: rgba(255,255,255,0.08); border-radius: 20px; overflow: hidden; margin-top: 10px; border: 1px solid rgba(255,255,255,0.15); }
+
         #progFill { height: 100%; width: 0%; background: linear-gradient(150deg, var(--ice-blue), #fff); box-shadow: 0 0 15px var(--ice-blue); transition: 1s; }
+
         .gold-glow { color: var(--gold) !important; text-shadow: 0 0 15px var(--gold); }
 
-        #musicHub { 
-            width: 92%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border-radius: 30px; 
-            height: 0; opacity: 0; visibility: hidden; transition: height 0.5s, opacity 0.3s; overflow: hidden; border: 1.5px solid var(--border); 
+
+
+        #musicHub {
+
+            width: 92%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border-radius: 30px;
+
+            height: 0; opacity: 0; visibility: hidden; transition: height 0.5s, opacity 0.3s; overflow: hidden; border: 1.5px solid var(--border);
+
             flex-shrink: 0; margin-bottom: 0; position: relative;
+
         }
+
         #musicHub.visible { height: 250px !important; opacity: 1; visibility: visible; padding: 10px; margin-bottom: 10px; }
-        #musicHub.video-mode { height: 480px !important; max-width: 95%; } 
+
+        #musicHub.video-mode { height: 480px !important; max-width: 95%; }
+
+
 
         .loading-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--ice-blue); font-size: 14px; font-weight: 900; z-index: 1; }
 
+
+
         .iframe-slot { display: none; width: 100%; height: 100%; border-radius: 20px; overflow: hidden; background: #000; position: relative; z-index: 2; }
+
         .iframe-slot.active { display: block; }
+
         iframe { width: 100%; height: 100%; border: none; }
 
+
+
 .menu-item {
+
     background: rgba(0, 0, 0, 0.75);
+
     border: 2px solid #ffffff;
+
     border-radius: 24px;
+
     padding: 22px 28px;
+
     display: flex;
+
     justify-content: space-between;
+
     margin-bottom: 12px;
+
     cursor: pointer;
 
+
+
     color: white;
+
     font-weight: 700;
 
+
+
     box-shadow: 0 0 15px rgba(255,255,255,0.15);
+
 }        .menu-item.done { border-color: #30D158; background: rgba(48, 209, 88, 0.08); }
 
+
+
         .btn-glow { width: 100%; padding: 22px; border: none; border-radius: 28px; background: #1f29b1; color: #ffffff; font-size: 17px; font-weight: 900; cursor: pointer; }
+
         input { width: 100%; padding: 22px; border-radius: 28px; border: 2.5px solid var(--border); margin-bottom: 30px; background: rgba(255,255,255,0.02); color: #fff; text-align: center; font-size: 19px; outline: none; }
 
+
+
         #inlineQuiz { width: 100%; margin-top: 25px; display: none; border-top: 1px solid var(--border); padding-top: 20px; }
+
         #inlineQuiz.visible { display: block; }
 
+
+
 .option-cell {
+
     width: 100%;
+
     padding: 18px;
+
     margin: 8px 0;
+
     border-radius: 20px;
 
+
+
     background: rgba(0, 0, 0, 0.75);
+
     border: 2px solid #ffffff;
 
+
+
     color: white;
+
     font-weight: 800;
+
     text-align: center;
 
+
+
     cursor: pointer;
+
     transition: 0.3s;
 
+
+
     box-shadow: 0 0 15px rgba(255,255,255,0.12);
+
 }        .correct { background: #30D158 !important; color: #000; box-shadow: 0 0 20px #30D158; }
+
         .wrong { background: #FF453A !important; color: #fff; box-shadow: 0 0 20px #FF453A; animation: shake 0.4s; }
+
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
+
+
         #adminPanel { position: fixed; inset: 0; background: #000; z-index: 20000; display: none; flex-direction: column; padding: 25px; overflow-y: auto; border: 2px solid var(--ice-blue); }
+
         .admin-stat { background: rgba(165, 216, 255, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--ice-blue); margin-bottom: 20px; text-align: center; }
+
         .log-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 5px; padding: 12px; border-bottom: 1px solid rgba(165, 216, 255, 0.1); font-size: 11px; color: var(--ice-blue); text-align: center; align-items: center; }
+
         .admin-notch { position: fixed; bottom: 0; width: 100%; height: 20px; background: transparent; z-index: 30000; cursor: pointer; }
 
 
+
+
+
 body {
+
     background: url("https://i.ibb.co/kg9GXGHF/asikveysel16.jpg") no-repeat center center;
-    
+
+   
+
     background-color: black;
+
 }
+
+
 
 /* 📱 TELEFON İÇİN */
+
 @media (max-width: 1300px) {
+
     body {
+
         background-size: 340%;   /* büyüt */
+
         background-position: center top; /* yukarı hizala */
+
     }
+
 }
+
 #uName::placeholder {
+
     color: white;
+
     opacity: 1; /* bazı tarayıcılarda soluk olmaması için */
+
 }
+
 #uName {
+
     background: rgba(0, 0, 0, 0.7);
+
     border: 2px solid white;
+
     color: white;
+
     box-shadow: 0 0 15px rgba(255,255,255,0.3);
+
 }
+
 strong-box {
+
     background: rgba(0, 0, 0, 0.75);
+
     border: 2px solid #ffffff;
+
     box-shadow: 0 0 18px rgba(255,255,255,0.25);
+
     border-radius: 24px;
+
     color: white;
+
 }
+
 @media (max-width: 768px) {
+
     .menu-item, .option-cell, .p-card {
+
         border-radius: 18px;
+
         padding: 18px;
+
         font-size: 15px;
+
     }
+
+
 
     #dynamicIsland {
+
         width: 90%;
+
     }
 
+
+
     h1 {
+
         font-size: 22px !important;
+
     }
+
 }
+
    </style>
+
 </head>
+
 <body>
 
 
+
+
+
     <div class="aurora"></div>
+
     <div id="topControls">
+
         <div id="dynamicIsland"><div id="islandText">AŞIK VEYSEL ŞİİR ETKİNLİĞİ</div></div>
+
         <div id="logoutBtn" onclick="logout()">ÇIKIŞ YAP</div>
+
     </div>
 
+
+
     <div class="container" id="mainContainer">
+
         <div class="stage" id="loginStage">
+
             <div class="p-card">
-                
+
+               
+
                 <div class="logo-row-inner">
-                                      <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png 
+
+                                      <div class="logo-box-inner"><img src="https://i.ibb.co/xqmTz8xx/Milli-E-itim-Bakanl-Logo-svg.png
+
 "></div>
+
                 <div class="logo-box-inner"><img src="https://i.ibb.co/nqnXvN5b/konya.png"></div>
+
                 </div>
+
                 <div class="pen-write">🖋️</div>
+
                 <h1 style="font-size:32px; font-weight: 900; color: var(--ice-blue); margin-bottom:30px;">ŞİİR ETKİNLİĞİ</h1>
+
                 <input id="uName" type="text" placeholder="İSİM GİRİNİZ" autocomplete="off">
+
                 <button class="btn-glow" onclick="initApp()">BAŞLAT</button>
+
             </div>
+
         </div>
+
+
 
      <div id="musicHub"> <div class="iframe-slot" id="slot1"><iframe src="https://drive.google.com/file/d/1EZwVZZo37oa5NL2fwO38RX2BWwHncGGM/preview"></iframe></div> <div class="iframe-slot" id="slot2"><iframe src="https://drive.google.com/file/d/1CXjBNpcHrogN2InZi_8gXlzjl2bmhvk3/preview"></iframe></div> <div class="iframe-slot" id="slot3"><iframe src="https://drive.google.com/file/d/1r9erUqzZCBFyBxMJn9X6vso55vMDA8sT/preview"></iframe></div> <div class="iframe-slot" id="slot4"><iframe src="https://drive.google.com/file/d/1ntOc8_dvHJZODM6PWJCdwbcGxiLrGAKN/preview"></iframe></div> <div class="iframe-slot" id="slot5"><iframe src="https://drive.google.com/file/d/1DQ2vm0x-f4zeULXGFRo1VDb3_OpTD6bl/preview"></iframe></div> <div class="iframe-slot" id="slot6"><iframe src="https://drive.google.com/file/d/15b7UKzcR6xr1dgvvmy_tuWeS7TDfUPLJ/preview"></iframe></div> <div class="iframe-slot" id="slot7"><iframe src="https://drive.google.com/file/d/1ICEtbFXMfNrwB9RdGuje1_XPgjfoMmry/preview"></iframe></div> <div class="iframe-slot" id="slot8"><iframe src="https://drive.google.com/file/d/1hKhR8rkOVOlpmebQWANbiHfxog3PInHZ/preview"></iframe></div> <div class="iframe-slot" id="slot9"><iframe src="https://drive.google.com/file/d/1XBAFBGklucNcNOKtlIEEir4WRt78fIFM/preview"></iframe></div> </div>
 
 
+
+
+
         <div class="stage hidden" id="menuStage">
+
             <div class="prog-area">
+
                 <small id="progInfo">0 / 8 TAMAMLANDI</small>
+
                 <div class="prog-bar-bg"><div id="progFill"></div></div>
+
             </div>
+
             <div id="mainGrid"></div>
+
         </div>
+
+
 
         <div class="stage hidden" id="infoStage">
+
             <div class="p-card">
+
                 <h2 id="infoTitle" style="color:var(--ice-blue); margin-bottom:10px;">Bölüm</h2>
+
                 <button id="actionBtn" class="btn-glow" onclick="handleAction()">ETKİNLİĞİ BAŞLAT</button>
+
                 <button id="videoBackBtn" class="btn-glow" style="display:none;" onclick="finish()">İZLEMEYİ BİTİR</button>
 
+
+
                 <div id="inlineQuiz">
+
                     <div id="quizIslandText" style="color:var(--ice-blue); font-size:12px; font-weight:900; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:5px;">SORU 1 / 2</div>
+
                     <div id="qBody" style="text-align: center;"></div>
+
                     <button style="background:rgba(255, 69, 58, 0.1); border:1.5px solid #FF453A; color:#FF453A; padding:15px; width:100%; border-radius:20px; margin-top:20px; cursor:pointer; font-weight:900;" onclick="backToMain()">ETKİNLİKTEN ÇIKIŞ YAP</button>
+
                 </div>
 
+
+
                 <button id="backBtn" style="background:none; border:none; color:var(--ice-blue); margin-top:25px; cursor:pointer; font-weight: 900;" onclick="backToMain()">← GERİ DÖN</button>
+
             </div>
+
         </div>
+
         <div class="spacer-bottom"></div>
+
     </div>
+
+
 
 <div id="resultScreen" style="display:none; position:fixed; inset:0; background:#000; z-index:25000; color:white; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+
     <h1 style="font-size:28px; margin-bottom:20px;">SONUÇ</h1>
+
     <div id="resultText" style="font-size:18px; font-weight:800;"></div>
+
     <button class="btn-glow" style="margin-top:30px;" onclick="location.reload()">TEKRAR BAŞLA</button>
+
 </div>
 
+
+
     <div id="adminPanel">
+
         <h2 style="color:var(--ice-blue); margin-bottom:20px;">📊 ADMİN KAYITLARI</h2>
+
         <div class="admin-stat"><b>TOPLAM KATILIMCI:</b> <span id="statT">0</span></div>
+
         <div class="log-row" style="font-weight:900; background:rgba(165, 216, 255, 0.2);">
+
             <div>İSİM</div><div>BAŞARI</div><div>SAAT</div><div>TARİH</div>
+
         </div>
+
         <div id="logTable"></div>
+
         <button class="btn-glow" style="margin-top:20px; background:#FF453A; color:#fff;" onclick="document.getElementById('adminPanel').style.display='none'">KAPAT</button>
+
     </div>
+
+
 
     <div class="admin-notch" onclick="handleAdminClick()"></div>
 
+
+
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_fAOF3s3QFMchidYUms8eQ0766G6lPmKBPUMPM13OIsNUoov47AqlIbi9ix3SL24/exec"; 
-   let state = { 
-    name: "", 
-    solved: [], 
-    scores: {}, // EKLENEN KISIM BURASI
-    currentData: null, 
-    i: 0, 
-    score: 0, 
-    aClicks: 0, 
-    sessionId: "" 
-};
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_fAOF3s3QFMchidYUms8eQ0766G6lPmKBPUMPM13OIsNUoov47AqlIbi9ix3SL24/exec";
+
+    let state = { name: "", solved: [], currentData: null, i: 0, score: 0, aClicks: 0, sessionId: "" };
+
+
 
     const contentData = [
+
         { id: 1, t: "Uzun İnce Bir Yoldayım", qs: [{q:"Şiirin teması nedir?", o:["ÖLÜM","HASRET","AŞK"], c:0},{q:"Şiirde iki kapalı han metaforuyla anlatılmak istenen nedir?", o:["DÜNYA-AHİRET","GECE-GÜNDÜZ","DOĞUM-ÖLÜM"], c:2}]},
+
         { id: 2, t: "Dostlar Beni Hatırlasın", qs: [{q:"Şiirin teması nedir?", o:["DOĞA SEVGİSİ-BAHARIN GELİŞİ","ÖLÜM-DOSLUK","GEÇMİŞE ÖZLEM-PİŞMANLIK"], c:1},{q:"şiirdeki anadolu kültürü unsuru nedir?", o:["GELENEKSEL MİMARİ YAPILAR","SARAY EDEBIYATI ÖZELLİKLERİ ","AŞIKLIK GELENEĞİ"], c:2}]},
-        { id: 3, t: "Kara Toprak", qs: [{q:"Şiirde şair hangi Anadolu unsurlarını yansıtmıştır?", o:["SANAYİ VE FABRİKA İŞÇİLİĞİ","TOPRAĞA DUYULAN DERİN SEVGİ","GÖÇEBE YAŞAM VE HAYVANCILIK"], c:0},{q:"Şiirin teması nedir?", o:["YAŞAMA SEVİNCİ-ZENGİNLİK","İNSANLARDAN KAÇIŞ-YANLIZLIK","SADAKAT-DOĞAYA BAĞLILIK"], c:2}]},
+
+        { id: 3, t: "Kara Toprak", qs: [{q:"Şiirde şair hangi Anadolu unsurlarını yansıtmıştır?", o:["SANAYİ VE FABRİKA İŞÇİLİĞİ","TOPRAĞA DUYULAN DERİN SEVGİ","GÖÇEBE YAŞAM VE HAYVANCILIK"], c:1},{q:"Şiirin teması nedir?", o:["YAŞAMA SEVİNCİ-ZENGİNLİK","İNSANLARDAN KAÇIŞ-YANLIZLIK","SADAKAT-DOĞAYA BAĞLILIK"], c:2}]},
+
         { id: 4, t: "Sazıma", qs: [{q:"şiirde hangi edebi sanat ağır basar?", o:["TEŞBİH","TEŞHİS","İNTAK"], c:1},{q:"Şiirin teması nedir?", o:["ÖLÜM-SANATIN KALICILIĞI","HAYATIN GEÇİCİLİĞİ-HÜZÜN","GEÇMİŞE DUYULAN ÖZLEM"], c:0}]},
+
         { id: 5, t: "Güzelliğin On Para Etmez", qs: [{q:"Şiirin ölçüsünü belirtiniz?", o:["SERBEST ÖLÇÜ"," 7'LI HECE ÖLÇÜSÜ"," 11'LI HECE ÖLÇÜSÜ"], c:2},{q:"şiirin teması nedir?", o:["AŞK-ÖZLEM","DOĞADAN KOPUŞ-KARAMSARLIK","MADDİ DEĞERLERİN ÖNEMİ"], c:0}]},
+
         { id: 6, t: "Beni Hor Görme", qs: [{q:"Şiirin temasını nedir?", o:["HASRET-AŞK","DOĞA-TABİAT","EŞİTLİK-KARDEŞLİK"], c:2},{q:"Şiirde geçen 'Aynı vardan var olmuşuz' dizesi tasavvuftaki hangi düzine ile ilgilidir? ", o:["VAHDET-VÜCUT","TECELLİ-ZAHİR","FENA-BEKA"], c:0}]},
-        { id: 7, t: "Kahpe Felek", qs: [{q:"Şiirde Anadolu kültürüne ait unsurlar nelerdir?", o:["GURBET-AYRILIK","İMECE-YARDIMLAŞMA","YAYLACILIK-GÖÇERLİK"], c:0},{q:"Şiirin teması nedir?", o:["KADERE RIZA-SABIR","İSYAN-ŞİKAYET","YAŞAMA SEVİNCİ-UMUT"], c:1}]},
-        { id: 8, t: "AŞIK VEYSEL'İN KENDİ SESİNDEN", isVideo: true }
+
+        { id: 8, t: "Kahpe Felek", qs: [{q:"Şiirde Anadolu kültürüne ait unsurlar nelerdir?", o:["GURBET-AYRILIK","İMECE-YARDIMLAŞMA","YAYLACILIK-GÖÇERLİK"], c:0},{q:"Şiirin teması nedir?", o:["KADERE RIZA-SABIR","İSYAN-ŞİKAYET","YAŞAMA SEVİNCİ-UMUT"], c:1}]},
+
+        { id: 9, t: "AŞIK VEYSEL'İN KENDİ SESİNDEN", isVideo: true }
+
     ];
 
+
+
     function initApp() {
+
         const val = document.getElementById("uName").value;
+
         if(val.length < 2) return;
+
         state.name = val;
+
         state.sessionId = state.name + "_" + Date.now();
+
         document.getElementById("loginStage").classList.add("hidden");
+
         document.getElementById("menuStage").classList.remove("hidden");
+
         document.getElementById("logoutBtn").classList.add("visible");
+
         document.getElementById("islandText").innerText = `HOŞ GELDİN, ${state.name.toUpperCase()}`;
+
         renderMenu();
+
         sendInitialRegistration();
+
     }
+
+
 
     async function sendInitialRegistration() {
+
         const simdi = new Date();
-        const dStr = simdi.toLocaleDateString('tr-TR'); 
+
+        const dStr = simdi.toLocaleDateString('tr-TR');
+
         const tStr = simdi.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+
         try { await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ u: state.sessionId, n: state.name, s: "0 / 9", c: "Giriş Yaptı", d: "'" + dStr, t: "'" + tStr }) }); } catch(e) {}
+
     }
 
-     function renderMenu() {
-    const count = state.solved.length;
-    const fill = document.getElementById("progFill");
-    const info = document.getElementById("progInfo");
-    fill.style.width = (count / 8 * 100) + "%";
-    
-    if(count === 8) { 
-        info.innerText = "TEBRİKLER! TÜM ŞİİRLER TAMAMLANDI 🏆"; 
-        info.classList.add("gold-glow"); 
-        fill.style.background = "var(--gold)"; 
-    } 
-    else { 
-        info.innerText = `${count} / 8 TAMAMLANDI`; 
-    }
 
-    document.getElementById("mainGrid").innerHTML = contentData.map(item => {
-        // Skoru belirle: Eğer çözülmüşse skoru yaz, video ise tik koy, çözülmemişse ok koy.
-        let statusDisplay = '❯';
-        if (state.solved.includes(item.id)) {
-            if (item.isVideo) {
-                statusDisplay = '✓';
-            } else {
-                statusDisplay = `<span style="color:#30D158;">${state.scores[item.id] || 0} / ${item.qs.length}</span>`;
-            }
-        }
 
-        return `
+    function renderMenu() {
+
+        const count = state.solved.length;
+
+        const fill = document.getElementById("progFill");
+
+        const info = document.getElementById("progInfo");
+
+        fill.style.width = (count / 8 * 100) + "%";
+
+        if(count === 8) { info.innerText = "TEBRİKLER! TÜM ŞİİRLER TAMAMLANDI 🏆"; info.classList.add("gold-glow"); fill.style.background = "var(--gold)"; }
+
+        else { info.innerText = `${count} / 8 TAMAMLANDI`; }
+
+        document.getElementById("mainGrid").innerHTML = contentData.map(item => `
+
             <div class="menu-item ${state.solved.includes(item.id) ? 'done' : ''}" onclick="selectContent(${item.id})">
-                <span>${item.t}</span>
-                <div>${statusDisplay}</div>
+
+                <span>${item.t}</span><div>${state.solved.includes(item.id) ? '✓' : '❯'}</div>
+
             </div>
-        `;
-    }).join("");
-}
-    function selectContent(id) {
-        state.currentData = contentData.find(x => x.id === id);
-        document.getElementById("menuStage").classList.add("hidden");
-        document.getElementById("infoStage").classList.remove("hidden");
-        document.getElementById("infoTitle").innerText = state.currentData.t;
-        const hub = document.getElementById("musicHub");
-        hub.classList.add("visible");
-        document.querySelectorAll('.iframe-slot').forEach(s => s.classList.remove('active'));
-        document.getElementById(`slot${id}`).classList.add('active');
-        if(state.currentData.isVideo) { hub.classList.add("video-mode"); document.getElementById("actionBtn").style.display = "none"; document.getElementById("videoBackBtn").style.display = "block"; } 
-        else { hub.classList.remove("video-mode"); document.getElementById("actionBtn").style.display = "block"; document.getElementById("videoBackBtn").style.display = "none"; }
+
+        `).join("");
+
     }
+
+
+
+    function selectContent(id) {
+
+        state.currentData = contentData.find(x => x.id === id);
+
+        document.getElementById("menuStage").classList.add("hidden");
+
+        document.getElementById("infoStage").classList.remove("hidden");
+
+        document.getElementById("infoTitle").innerText = state.currentData.t;
+
+        const hub = document.getElementById("musicHub");
+
+        hub.classList.add("visible");
+
+        document.querySelectorAll('.iframe-slot').forEach(s => s.classList.remove('active'));
+
+        document.getElementById(`slot${id}`).classList.add('active');
+
+        if(state.currentData.isVideo) { hub.classList.add("video-mode"); document.getElementById("actionBtn").style.display = "none"; document.getElementById("videoBackBtn").style.display = "block"; }
+
+        else { hub.classList.remove("video-mode"); document.getElementById("actionBtn").style.display = "block"; document.getElementById("videoBackBtn").style.display = "none"; }
+
+    }
+
+
 
     function handleAction() {
+
         document.getElementById("actionBtn").style.display = "none";
+
         document.getElementById("backBtn").style.display = "none";
+
         document.getElementById("inlineQuiz").classList.add("visible");
+
         state.i = 0; state.score = 0; renderQuestion();
+
     }
+
+
 
     function renderQuestion() {
+
         const totalQ = state.currentData.qs.length;
+
         if(state.i >= totalQ) return finish();
+
         const q = state.currentData.qs[state.i];
+
         document.getElementById("quizIslandText").innerText = `SORU ${state.i+1} / ${totalQ}`;
+
         document.getElementById("qBody").innerHTML = `<h4 style="margin-bottom:15px; font-size:16px;">${q.q}</h4>${q.o.map((x,idx)=>`<div class="option-cell" onclick="checkAns(this,${idx},${q.c})">${x}</div>`).join("")}`;
+
     }
+
+
 
    function checkAns(el, sel, cor) {
+
     const cells = document.querySelectorAll('.option-cell');
+
     cells.forEach(c => c.style.pointerEvents = "none");
 
+
+
     if(sel === cor) {
+
         el.classList.add("correct");
+
         state.score++;
 
+
+
         // ⭐ DOĞRU ANİMASYON
+
         document.body.style.boxShadow = "inset 0 0 80px rgba(48,209,88,0.4)";
+
         setTimeout(() => document.body.style.boxShadow = "", 400);
-    } 
+
+    }
+
     else {
+
         el.classList.add("wrong");
 
+
+
         // ❌ YANLIŞ ANİMASYON
+
         document.body.style.boxShadow = "inset 0 0 80px rgba(255,69,58,0.4)";
+
         setTimeout(() => document.body.style.boxShadow = "", 400);
+
     }
+
+
 
     setTimeout(() => { state.i++; renderQuestion(); }, 1000);
-}
-    
 
- async function finish() {
-    const percent = Math.round((state.solved.length / 9) * 100);
-    
-    // Çözülenler listesine ekle
-    if(!state.solved.includes(state.currentData.id)) {
-        state.solved.push(state.currentData.id);
-    }
-    
-    // Skoru kaydet (Video değilse)
-    if(!state.currentData.isVideo) {
-        state.scores[state.currentData.id] = state.score;
+}
+
+   
+
+
+
+    async function finish() {
+
+        const percent = Math.round((state.solved.length / 8) * 100);
+
+        if(!state.solved.includes(state.currentData.id)) state.solved.push(state.currentData.id);
+
+        const finalScoreText = state.solved.length + " / 9";
+
+        document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR LÜTFEN BEKLEYİNİZ...";
+
+       
+
+        const simdi = new Date();
+
+        const dStr = simdi.toLocaleDateString('tr-TR');
+
+        const tStr = simdi.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+
+        try {
+
+            await fetch(SCRIPT_URL, {
+
+                method: "POST",
+
+                mode: "no-cors",
+
+                body: JSON.stringify({
+
+                    u: state.sessionId, n: state.name, s: finalScoreText, c: state.currentData.t, d: "'" + dStr, t: "'" + tStr  
+
+                })
+
+            });
+
+        } catch(e) {}
+
+        backToMain();
+
     }
 
-    const finalScoreText = state.solved.length + " / 8";
-    document.getElementById("islandText").innerText = "BAŞARINIZ KAYDEDİLİYOR...";
-    
-    // ... (fetch/kayıt kısımları aynı kalıyor)
-    
-    backToMain();
-}
+
 
     function backToMain() {
+
         document.querySelectorAll('iframe').forEach(iframe => {
+
             const currentSrc = iframe.src; iframe.src = "about:blank";
+
             setTimeout(() => { iframe.src = currentSrc; }, 100);
+
         });
+
         document.getElementById("musicHub").classList.remove("visible", "video-mode");
+
         document.getElementById("infoStage").classList.add("hidden");
+
         document.getElementById("inlineQuiz").classList.remove("visible");
+
         document.getElementById("actionBtn").style.display = "block";
+
         document.getElementById("backBtn").style.display = "block";
+
         document.getElementById("menuStage").classList.remove("hidden");
+
         document.getElementById("islandText").innerText = `HOŞ GELDİN, ${state.name.toUpperCase()}`;
+
         renderMenu();
+
     }
+
+
 
     function handleAdminClick() {
+
         state.aClicks++;
+
         if(state.aClicks >= 3) {
+
             const p = prompt("ŞİFRE:");
+
             if(p === "1923") { document.getElementById("adminPanel").style.display = "flex"; loadLogs(); }
+
             state.aClicks = 0;
+
         }
+
     }
+
+
 
     async function loadLogs() {
+
         const box = document.getElementById("logTable"); box.innerHTML = "Bekleyiniz...";
+
         try {
+
             const res = await fetch(SCRIPT_URL);
+
             const data = await res.json();
+
             const sessionMap = {};
+
             data.summary.forEach(item => { sessionMap[item.u] = item; });
+
             const list = Object.values(sessionMap);
+
             document.getElementById("statT").innerText = list.length;
+
             box.innerHTML = list.reverse().map(item => `
+
                 <div class="log-row">
+
                     <div style="text-align:left;">${item.n}</div>
+
                     <div>${item.s}</div>
+
                     <div>${item.t.replace(/'/g, '')}</div>
+
                     <div>${item.d.replace(/'/g, '')}</div>
+
                 </div>
+
             `).join("");
+
         } catch(e) { box.innerHTML = "Hata!"; }
+
     }
 
+
+
     function logout() { location.reload(); }
+
 </script>
+
 </body>
+
 </html>
